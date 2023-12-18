@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ingresos-Gastos: Lista</title>
+</head>
+
+<style>
+    table, th, td {
+        border: 1px solid rgb(124, 2, 223);
+    }
+</style>
+
+
+<body>
+
+    <header>
+        <h1>Aplicacion web Flask BCCeroXVIII</h1>
+    </header>
+
+
+    <section>
+        {# Esto utiliza Jinja para hacer una pagina html base. Todo lo que esta aca va a ir cuando declare un {% extends "base.html" %} al principio de otros html. 
+            Lo que esta entre {% block pageBase %} y {% endblock %} es lo que cambia en cada pagina. En las otras paginas como index o new, hay que abrir el {% extends "base.html" %} y luego entre 
+            {% block pageBase %} y {% endblock %} se pone lo propio de la pagina. En esas no va a hacer falta declarar el head, style, header, footer y demas cosas que codee aca #}
+            
+        {% block pageBase %}
+
+        {% endblock %}
+    </section>
+
+
+    <footer>
+        <br><br>&copy;2023 - todos los derechos reservados - franco@email.com        	
+    </footer>
+
+</body>
+</html>

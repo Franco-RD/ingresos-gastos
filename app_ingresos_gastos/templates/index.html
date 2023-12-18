@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block pageBase %}
+<h1>Esto es una lista de Ingresos y Gastos</h1>
+<table>
+    <tr>
+      <th>Fecha</th>
+      <th>Concepto</th>
+      <th>Monto</th>
+    </tr>
+    {% for item in data %}    
+        <tr>
+            <td>{{item.fecha}}</td>
+            <td>{{item.concepto}}</td>
+            <td>{{item.monto}}</td>
+        </tr>
+
+        {# Para no repetir cada entrada de la tabla, recibimos la lista con los datos de index en routes.
+            Con esta forma de Jinja ({% for item in data %} y {% endfor %}) se repite lo que esta en la lista hasta terminarla.
+            El data en for item in data % es la lista que pasamos como parametro#}
+    {% endfor %}
+    
+
+  </table>
+
+  <button>
+    <a href="/new">Nuevo Registro</a>
+  </button>
+
+{% endblock %}
