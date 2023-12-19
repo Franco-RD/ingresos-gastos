@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block pageBase %}
+
+<h1>Esto es para {{tipoAccion}} Ingresos y Gastos</h1>
+<form action="">  {# EN el action va la url de a donde van los datos del formulario #}
+    <label>Fecha:</label><br>
+    <input type="date" name="fecha"><br>  {# el id de los input se usa mas para js y se puede sacar. El name tiene que ser distinto para cada input y se usa para capturar ahi lo que se pone en el input#}
+    <label>Concepto:</label><br>
+    <input type="text" name="concepto"><br>
+    <label>Monto:</label><br>
+    <input type="number" name="monto"><br><br>
+    
+    <button type="submit">{{tipoBoton}}</button>
+</form>
+
+<br>
+<button>
+    <a href="/">Volver</a>
+</button>   
+
+{% endblock %}
