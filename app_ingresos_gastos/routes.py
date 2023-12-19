@@ -19,3 +19,11 @@ def index():
 @app.route("/new")
 def new():
     return render_template("new.html")
+
+@app.route("/delete")
+def delete():
+    return render_template("delete.html")
+
+@app.route("/update")
+def update():
+    return render_template("update.html")
