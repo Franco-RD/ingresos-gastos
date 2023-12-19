@@ -14,6 +14,19 @@ Inicializar parametros para servidor (se hace por la terminal)
 En windows:   
 ``` set FLASK_APP=main.py ```
 
+En mac:
+``` export FLASK_APP=main.py ```
+
+# Otra opcion de ejecucion: 
+Crear un archivo .env y dentro agregar lo siguiente:
+
+``` FLASK_APP=main.py ```
+``` FLASK_DEBUG=True ```
+
+Luego se puede ejecutar por consola con solo
+
+``` flask run ```
+
 # Comando para ejecutar el servidor:   
 ``` flask --app main run ```
 
