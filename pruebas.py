@@ -26,9 +26,10 @@ for items in lectura:
 
 print("Mi lista: ", midato[0][1])
 
-"""
+
 
 ##########################################################
+
 # Ejemplo para registrar datos en csv
 import csv 
 
@@ -37,3 +38,10 @@ lectura = csv.writer(mifichero, delimiter=',', quotechar='"')
 lectura.writerow(['24/04/2024', 'roscon de reyes', '-40'])
 
 mifichero.close()  #Sino el archivo queda abierto
+"""
+
+##########################################################
+
+from datetime import date
+
+print(date.today())  #Siempre guarda las fechas en formato aaaa-mm-dd y nostros estamos usando dd/mm/aaaa para nuestra base. Hay que darlo vuelta y despues encargarnos de mostrarlo como queremos
