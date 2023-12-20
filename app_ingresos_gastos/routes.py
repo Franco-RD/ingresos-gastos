@@ -1,24 +1,25 @@
 from app_ingresos_gastos import app
-from flask import render_template  
+from flask import render_template, request  
+import csv
+
+#Todas las rutas definidas son de tipo get por default a menos que especifique otro metodo
 
 @app.route("/")
 def index():
-    datos = [
-        {'fecha':'01/03/2023',
-        'concepto':'Salario',
-        'monto':'1500'},
-        {'fecha':'01/05/2023',
-        'concepto':'Ropa',
-        'monto':'-150'},
-        {'fecha':'01/10/2023',
-        'concepto':'Supermercado',
-        'monto':'-200'}
-    ]
+    datos = []
+    fichero = open('data/movimientos.csv', 'r') #llamada al archivo csv
+    lectura = csv.reader(fichero, delimiter=',', quotechar='"') #accediendo a cada registro del archivo
+    for items in lectura:
+        datos.append(items)  #Recorremos el archivo y agregamos cada linea a la lista datos
+
     return render_template("index.html", data = datos, titulo = "Lista")  #Se pasa la lista como parametro para index.html
 
-@app.route("/new")
+@app.route("/new", methods=["GET", "POST"]) #Ahora esta url en particular sirve tanto para metodos get como post. Hay que definir dentro que va a retornar el get y que va a retornar el post
 def new():
-    return render_template("new.html", titulo = "Nuevo", tipoAccion = "registrar", tipoBoton = "Guardar")
+    if request.method == "POST":  #Esto devuelve el metodo que estamos utilizando        
+        return "Esto deberia registrarse" + str(request.form)
+    else:
+        return render_template("new.html", titulo = "Nuevo", tipoAccion = "registrar", tipoBoton = "Guardar")
 
 @app.route("/delete")
 def delete():

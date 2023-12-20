@@ -2,7 +2,7 @@
 {% block pageBase %}
 
 <h1>Esto es para {{tipoAccion}} Ingresos y Gastos</h1>
-<form action="">  {# EN el action va la url de a donde van los datos del formulario #}
+<form method="post">  {# EN el action va la url de a donde van los datos del formulario #}
     <label>Fecha:</label><br>
     <input type="date" name="fecha"><br>  {# el id de los input se usa mas para js y se puede sacar. El name tiene que ser distinto para cada input y se usa para capturar ahi lo que se pone en el input#}
     <label>Concepto:</label><br>
@@ -10,7 +10,7 @@
     <label>Monto:</label><br>
     <input type="number" name="monto"><br><br>
     
-    <button type="submit">{{tipoBoton}}</button>
+    <button type="submit">{{tipoBoton}}</button>  {# al ponerle como metodo post al form, el boton de tipo submit envia un post y no un get#}
 </form>
 
 <br>
