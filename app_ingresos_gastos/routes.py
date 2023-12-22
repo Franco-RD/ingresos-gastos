@@ -60,8 +60,14 @@ def new():
 
 @app.route("/delete/<int:id>")
 def delete(id):
-    return f"El registro a eliminar es el de id: {id}"
-    #return render_template("delete.html", titulo = "Borrar")
+    miFicheroDelete = open('data/movimientos.csv', 'r')
+    lecturaDelete = csv.reader(miFicheroDelete, delimiter=',', quotechar='"')
+    registro_buscado = []
+    for item in lecturaDelete:
+        if item[0] == str(id):  #Encuentro el id buscado para borrar
+            registro_buscado.append(item)
+    
+    return render_template("delete.html", titulo = "Borrar", data = registro_buscado)
 
 
 @app.route("/update/<int:id>")
