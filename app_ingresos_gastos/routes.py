@@ -9,9 +9,10 @@ from datetime import date
 def index():
     datos = []
     fichero = open('data/movimientos.csv', 'r') #llamada al archivo csv
-    lectura = csv.reader(fichero, delimiter=',', quotechar='"') #accediendo a cada registro del archivo
-    for items in lectura:
+    csvReader = csv.reader(fichero, delimiter=',', quotechar='"') #accediendo a cada registro del archivo
+    for items in csvReader:
         datos.append(items)  #Recorremos el archivo y agregamos cada linea a la lista datos
+    fichero.close()
 
     return render_template("index.html", data = datos, titulo = "Lista")  #Se pasa la lista como parametro para index.html
 
@@ -23,12 +24,36 @@ def new():
         
         if comprobar_error:
             return render_template("new.html", titulo = "Nuevo", tipoAccion = "registrar", tipoBoton = "Guardar", error = comprobar_error, dataForm = request.form)  #Los datos del formulario se devuelven al html para que en caso de error se mantengan los datos
+        
         else:
+            ################## Generar el ultimo ID para la base de datos ##########################
+            lista_id = []
+            last_id = "0"
+            new_id = 0
+
+            ficheroId = open('data/last_id.csv', 'r') 
+            csvReaderId = csv.reader(ficheroId, delimiter=',', quotechar='"') 
+            for items in csvReaderId:
+                lista_id.append(items[0])  
+            ficheroId.close()
+            
+            last_id = lista_id[-1]
+            new_id = int(last_id) + 1
+
+            ################## Guarda el ultimo ID generado en last_id #############################
+
+            fichero_new_id = open('data/last_id.csv', 'w')  #El metodo w para abrir pisa lo ultimo para guardar lo nuevo
+            fichero_new_id.write(str(new_id))
+            fichero_new_id.close()
+
+            ########################################################################################
+
             mifichero = open('data/movimientos.csv', 'a', newline = '')  #Acceder al archivo y configurar para cargarle registros 
             escritura = csv.writer(mifichero, delimiter=',', quotechar='"')  #Escribir con metodo writer
-            escritura.writerow([request.form['fecha'], request.form['concepto'], request.form['monto']])  #request.form es un array de tuplas con todos los datos que cargamos en el formulario. Cada clave de cada tupla es el name que le pusimos al campo input en el formulario 
+            escritura.writerow([new_id, request.form['fecha'], request.form['concepto'], request.form['monto']])  #request.form es un array de tuplas con todos los datos que cargamos en el formulario. Cada clave de cada tupla es el name que le pusimos al campo input en el formulario 
             mifichero.close()
             return redirect("/")  #Redirect me permite ir a cualquier ruta existente
+    
     else: #Si es get
         return render_template("new.html", titulo = "Nuevo", tipoAccion = "registrar", tipoBoton = "Guardar", dataForm = {})  #Como el html siempre usa esos datos del formulario, en los get hay que pasarle el dataForm vacio para que no se rompa
     
