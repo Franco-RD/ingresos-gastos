@@ -15,15 +15,15 @@ def index():
 
     return render_template("index.html", data = datos, titulo = "Lista")  #Se pasa la lista como parametro para index.html
 
+
 @app.route("/new", methods=["GET", "POST"]) #Ahora esta url en particular sirve tanto para metodos get como post. Hay que definir dentro que va a retornar el get y que va a retornar el post
 def new():
     if request.method == "POST":  #Esto devuelve el metodo que estamos utilizando 
-        hoy = str(date.today())  #Fecha del dia para validacion. No se tiene que poder agregar gastos de dias mayores a hoy
+        comprobar_error = validarFormulario(request.form)
 
-        if request.form['fecha'] > hoy:
-            return render_template("new.html", titulo = "Nuevo", tipoAccion = "registrar", tipoBoton = "Guardar")  #Si se pone una fecha no valida, por ahora vuelve al forulario new pelado
-        
-        if request.form['fecha'] <= hoy:
+        if comprobar_error:
+            return render_template("new.html", titulo = "Nuevo", tipoAccion = "registrar", tipoBoton = "Guardar", error = comprobar_error)  
+        else:
             mifichero = open('data/movimientos.csv', 'a', newline = '')  #Acceder al archivo y configurar para cargarle registros 
             escritura = csv.writer(mifichero, delimiter=',', quotechar='"')  #Escribir con metodo writer
             escritura.writerow([request.form['fecha'], request.form['concepto'], request.form['monto']])  #request.form es un array de tuplas con todos los datos que cargamos en el formulario. Cada clave de cada tupla es el name que le pusimos al campo input en el formulario 
@@ -31,11 +31,28 @@ def new():
             return redirect("/")  #Redirect me permite ir a cualquier ruta existente
     else: #Si es get
         return render_template("new.html", titulo = "Nuevo", tipoAccion = "registrar", tipoBoton = "Guardar")
+    
 
 @app.route("/delete")
 def delete():
     return render_template("delete.html", titulo = "Borrar")
 
+
 @app.route("/update")
 def update():
     return render_template("update.html", titulo = "Actualizar", tipoAccion = "actualizar", tipoBoton = "Editar")
+
+
+
+def validarFormulario(datosFormulario):
+    errores = []
+    hoy = str(date.today())  #Fecha del dia para validacion. No se tiene que poder agregar gastos de dias mayores a hoy
+
+    if datosFormulario['fecha'] > hoy or datosFormulario['fecha'] == "":
+        errores.append("La fecha no puede ser mayor a la actual o vacia")    
+    if datosFormulario['concepto'] == "":
+        errores.append("El concepto no puede ir vacio")
+    if datosFormulario['monto'] == "" or int(datosFormulario['monto']) == 0:  #El monto tiene que ir con int porque por defecto las entradas al formulario son str
+        errores.append("El monto debe ser distinto de cero y de vacio")
+    
+    return errores

@@ -18,4 +18,12 @@
     <a href="/">Volver</a>
 </button>   
 
+<div style="color: red;">
+    {% for item in error %}
+    <ul>
+        <li>{{item}}</li>        
+    </ul>
+    {% endfor %}
+</div>
+
 {% endblock %}
