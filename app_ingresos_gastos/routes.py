@@ -20,9 +20,9 @@ def index():
 def new():
     if request.method == "POST":  #Esto devuelve el metodo que estamos utilizando 
         comprobar_error = validarFormulario(request.form)
-
+        
         if comprobar_error:
-            return render_template("new.html", titulo = "Nuevo", tipoAccion = "registrar", tipoBoton = "Guardar", error = comprobar_error)  
+            return render_template("new.html", titulo = "Nuevo", tipoAccion = "registrar", tipoBoton = "Guardar", error = comprobar_error, dataForm = request.form)  #Los datos del formulario se devuelven al html para que en caso de error se mantengan los datos
         else:
             mifichero = open('data/movimientos.csv', 'a', newline = '')  #Acceder al archivo y configurar para cargarle registros 
             escritura = csv.writer(mifichero, delimiter=',', quotechar='"')  #Escribir con metodo writer
@@ -30,7 +30,7 @@ def new():
             mifichero.close()
             return redirect("/")  #Redirect me permite ir a cualquier ruta existente
     else: #Si es get
-        return render_template("new.html", titulo = "Nuevo", tipoAccion = "registrar", tipoBoton = "Guardar")
+        return render_template("new.html", titulo = "Nuevo", tipoAccion = "registrar", tipoBoton = "Guardar", dataForm = {})  #Como el html siempre usa esos datos del formulario, en los get hay que pasarle el dataForm vacio para que no se rompa
     
 
 @app.route("/delete")
@@ -40,7 +40,7 @@ def delete():
 
 @app.route("/update")
 def update():
-    return render_template("update.html", titulo = "Actualizar", tipoAccion = "actualizar", tipoBoton = "Editar")
+    return render_template("update.html", titulo = "Actualizar", tipoAccion = "actualizar", tipoBoton = "Editar", dataForm = {})  #Como el html siempre usa esos datos del formulario, en los get hay que pasarle el dataForm vacio para que no se rompa
 
 
 
@@ -52,7 +52,7 @@ def validarFormulario(datosFormulario):
         errores.append("La fecha no puede ser mayor a la actual o vacia")    
     if datosFormulario['concepto'] == "":
         errores.append("El concepto no puede ir vacio")
-    if datosFormulario['monto'] == "" or int(datosFormulario['monto']) == 0:  #El monto tiene que ir con int porque por defecto las entradas al formulario son str
+    if datosFormulario['monto'] == "" or float(datosFormulario['monto']) == 0.0:  #El monto tiene que ir con int porque por defecto las entradas al formulario son str
         errores.append("El monto debe ser distinto de cero y de vacio")
     
     return errores
