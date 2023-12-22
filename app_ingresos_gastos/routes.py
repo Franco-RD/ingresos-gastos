@@ -33,14 +33,16 @@ def new():
         return render_template("new.html", titulo = "Nuevo", tipoAccion = "registrar", tipoBoton = "Guardar", dataForm = {})  #Como el html siempre usa esos datos del formulario, en los get hay que pasarle el dataForm vacio para que no se rompa
     
 
-@app.route("/delete")
-def delete():
-    return render_template("delete.html", titulo = "Borrar")
+@app.route("/delete/<int:id>")
+def delete(id):
+    return f"El registro a eliminar es el de id: {id}"
+    #return render_template("delete.html", titulo = "Borrar")
 
 
-@app.route("/update")
-def update():
-    return render_template("update.html", titulo = "Actualizar", tipoAccion = "actualizar", tipoBoton = "Editar", dataForm = {})  #Como el html siempre usa esos datos del formulario, en los get hay que pasarle el dataForm vacio para que no se rompa
+@app.route("/update/<int:id>")
+def update(id):
+    return f"El registro a editar es el de id: {id}"
+    #return render_template("update.html", titulo = "Actualizar", tipoAccion = "actualizar", tipoBoton = "Editar", dataForm = {})  #Como el html siempre usa esos datos del formulario, en los get hay que pasarle el dataForm vacio para que no se rompa
 
 
 
