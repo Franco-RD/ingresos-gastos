@@ -1,4 +1,4 @@
-from app_ingresos_gastos import app
+from app_ingresos_gastos import app, MOVIMIENTOS_FILE, LAST_ID_FILE
 from flask import render_template, request, redirect  
 import csv
 from datetime import date
@@ -8,7 +8,7 @@ from datetime import date
 @app.route("/")
 def index():
     datos = []
-    fichero = open('data/movimientos.csv', 'r') #llamada al archivo csv
+    fichero = open(MOVIMIENTOS_FILE, 'r') #llamada al archivo csv
     csvReader = csv.reader(fichero, delimiter=',', quotechar='"') #accediendo a cada registro del archivo
     for items in csvReader:
         datos.append(items)  #Recorremos el archivo y agregamos cada linea a la lista datos
@@ -31,7 +31,7 @@ def new():
             last_id = "0"
             new_id = 0
 
-            ficheroId = open('data/last_id.csv', 'r') 
+            ficheroId = open(LAST_ID_FILE, 'r') 
             csvReaderId = csv.reader(ficheroId, delimiter=',', quotechar='"') 
             for items in csvReaderId:
                 lista_id.append(items[0])  
@@ -42,13 +42,13 @@ def new():
 
             ################## Guarda el ultimo ID generado en last_id #############################
 
-            fichero_new_id = open('data/last_id.csv', 'w')  #El metodo w para abrir pisa lo ultimo para guardar lo nuevo
+            fichero_new_id = open(LAST_ID_FILE, 'w')  #El metodo w para abrir pisa lo ultimo para guardar lo nuevo
             fichero_new_id.write(str(new_id))
             fichero_new_id.close()
 
             ########################################################################################
 
-            mifichero = open('data/movimientos.csv', 'a', newline = '')  #Acceder al archivo y configurar para cargarle registros 
+            mifichero = open(MOVIMIENTOS_FILE, 'a', newline = '')  #Acceder al archivo y configurar para cargarle registros 
             escritura = csv.writer(mifichero, delimiter=',', quotechar='"')  #Escribir con metodo writer
             escritura.writerow([new_id, request.form['fecha'], request.form['concepto'], request.form['monto']])  #request.form es un array de tuplas con todos los datos que cargamos en el formulario. Cada clave de cada tupla es el name que le pusimos al campo input en el formulario 
             mifichero.close()
@@ -61,7 +61,7 @@ def new():
 @app.route("/delete/<int:id>", methods=["GET", "POST"])
 def delete(id):
     if request.method == "GET":  #Maneja que pasa con el metodo get
-        miFicheroDelete = open('data/movimientos.csv', 'r')
+        miFicheroDelete = open(MOVIMIENTOS_FILE, 'r')
         lecturaDelete = csv.reader(miFicheroDelete, delimiter=',', quotechar='"')
         registro_buscado = []
         for item in lecturaDelete:
@@ -74,7 +74,7 @@ def delete(id):
     else: #Maneja que pasa con el metodo post
         ################## Lectura de archivo para dejar todos los datos salvo el del id a borrar ##########################
 
-        fichero_lectura = open('data/movimientos.csv', 'r')
+        fichero_lectura = open(MOVIMIENTOS_FILE, 'r')
         csv_reader = csv.reader(fichero_lectura, delimiter=',', quotechar='"')
         registros = []
 
@@ -85,7 +85,7 @@ def delete(id):
 
         ###################### Guardamos todos los registros que quedaron sin el id a borrar ##############################
 
-        fichero_guardar = open('data/movimientos.csv', 'w', newline = '')  #El parametro newline es para que vaya haciendo un salto de linea con cada escritura
+        fichero_guardar = open(MOVIMIENTOS_FILE, 'w', newline = '')  #El parametro newline es para que vaya haciendo un salto de linea con cada escritura
         csv_writer = csv.writer(fichero_guardar, delimiter=',', quotechar='"')  #Escribir con metodo writer
         for datos in registros:
             csv_writer.writerow(datos)  
@@ -95,10 +95,17 @@ def delete(id):
         return redirect("/")
 
 
-@app.route("/update/<int:id>")
+@app.route("/update/<int:id>", methods=["GET", "POST"])
 def update(id):
-    return f"El registro a editar es el de id: {id}"
-    #return render_template("update.html", titulo = "Actualizar", tipoAccion = "actualizar", tipoBoton = "Editar", dataForm = {})  #Como el html siempre usa esos datos del formulario, en los get hay que pasarle el dataForm vacio para que no se rompa
+    if request.method == "GET":  #Maneja que pasa con el metodo get
+        miFicheroUpdate = open(MOVIMIENTOS_FILE, 'r')
+        lecturaUpdate = csv.reader(miFicheroUpdate, delimiter=',', quotechar='"')
+        registro_buscado = []
+        for item in lecturaUpdate:
+            if item[0] == str(id):  #Encuentro el id buscado para actualizar                
+                registro_buscado = item
+
+    return render_template("update.html", titulo = "Actualizar", tipoAccion = "actualizar", tipoBoton = "Editar", dataForm = registro_buscado)  #Como el html siempre usa esos datos del formulario, en los get hay que pasarle el dataForm vacio para que no se rompa
 
 
 
