@@ -58,16 +58,21 @@ def new():
         return render_template("new.html", titulo = "Nuevo", tipoAccion = "registrar", tipoBoton = "Guardar", dataForm = {})  #Como el html siempre usa esos datos del formulario, en los get hay que pasarle el dataForm vacio para que no se rompa
     
 
-@app.route("/delete/<int:id>")
+@app.route("/delete/<int:id>", methods=["GET", "POST"])
 def delete(id):
-    miFicheroDelete = open('data/movimientos.csv', 'r')
-    lecturaDelete = csv.reader(miFicheroDelete, delimiter=',', quotechar='"')
-    registro_buscado = []
-    for item in lecturaDelete:
-        if item[0] == str(id):  #Encuentro el id buscado para borrar
-            registro_buscado.append(item)
+    if request.method == "GET":  #Maneja que pasa con el metodo get
+        miFicheroDelete = open('data/movimientos.csv', 'r')
+        lecturaDelete = csv.reader(miFicheroDelete, delimiter=',', quotechar='"')
+        registro_buscado = []
+        for item in lecturaDelete:
+            if item[0] == str(id):  #Encuentro el id buscado para borrar
+                #registro_buscado.append(item)
+                registro_buscado = item  #En vez de hacer un append, se iguala el array que devolvemos a item, para que no quede un array de arrays. Asi en delete.html, podemos recorrer con un solo subindice en lugar de dos. 
+        
+        return render_template("delete.html", titulo = "Borrar", data = registro_buscado)
     
-    return render_template("delete.html", titulo = "Borrar", data = registro_buscado)
+    else: #Maneja que pasa con el metodo post
+        return f"Esto deberia eliminar el registro con el id {id}"
 
 
 @app.route("/update/<int:id>")

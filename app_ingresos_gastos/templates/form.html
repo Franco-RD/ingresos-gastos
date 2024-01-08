@@ -2,7 +2,7 @@
 {% block pageBase %}
 
 <h1>Esto es para {{tipoAccion}} Ingresos y Gastos</h1>
-<form method="post">  {# EN el action va la url de a donde van los datos del formulario #}
+<form method="post" action="/new">  {# En el action va la url de a donde van los datos del formulario #}
     <label>Fecha:</label><br>
     <input type="date" name="fecha" value="{{dataForm['fecha']}}"><br>  {# el id de los input se usa mas para js y se puede sacar. El name tiene que ser distinto para cada input y se usa para capturar ahi lo que se pone en el input#}
     <label>Concepto:</label><br>
