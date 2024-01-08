@@ -72,7 +72,27 @@ def delete(id):
         return render_template("delete.html", titulo = "Borrar", data = registro_buscado)
     
     else: #Maneja que pasa con el metodo post
-        return f"Esto deberia eliminar el registro con el id {id}"
+        ################## Lectura de archivo para dejar todos los datos salvo el del id a borrar ##########################
+
+        fichero_lectura = open('data/movimientos.csv', 'r')
+        csv_reader = csv.reader(fichero_lectura, delimiter=',', quotechar='"')
+        registros = []
+
+        for item in csv_reader:
+            if item[0] != str(id):  #Filtro toda la base de datos y la vuelvo a guardar sin el id que quiero borrar
+                registros.append(item)                
+        fichero_lectura.close()
+
+        ###################### Guardamos todos los registros que quedaron sin el id a borrar ##############################
+
+        fichero_guardar = open('data/movimientos.csv', 'w', newline = '')  #El parametro newline es para que vaya haciendo un salto de linea con cada escritura
+        csv_writer = csv.writer(fichero_guardar, delimiter=',', quotechar='"')  #Escribir con metodo writer
+        for datos in registros:
+            csv_writer.writerow(datos)  
+        
+        fichero_guardar.close()
+
+        return redirect("/")
 
 
 @app.route("/update/<int:id>")
