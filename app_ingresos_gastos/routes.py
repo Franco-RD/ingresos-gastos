@@ -40,28 +40,23 @@ def delete(id):
 
         ###################### Guardamos todos los registros que quedaron sin el id a borrar ##############################
         delete_by(id, registros=registros)
-        
+
         return redirect("/")
 
 
 @app.route("/update/<int:id>", methods=["GET", "POST"])
 def update(id):
     if request.method == "POST":  #Maneja que pasa con el metodo post
-        return f"Se debe actualizar estos datos {request.form}"
+        formulario = request.form
+        registros = select_all()
+        update_item(id, registros, formulario)
+        
+        return redirect("/")
     
     else:  #Maneja que pasa con el metodo get
-        miFicheroUpdate = open(MOVIMIENTOS_FILE, 'r')
-        lecturaUpdate = csv.reader(miFicheroUpdate, delimiter=',', quotechar='"')
-        registro_buscado = dict()        
-        for item in lecturaUpdate:
-            if item[0] == str(id):  #Encuentro el id buscado para actualizar    
-                registro_buscado['id'] = item[0]
-                registro_buscado['fecha'] = item[1]
-                registro_buscado['concepto'] = item[2]
-                registro_buscado['monto'] = item[3]    
+        registro_buscado = select_by(id, "dic")   
 
-
-    return render_template("update.html", titulo = "Actualizar", tipoAccion = "actualizar", tipoBoton = "Editar", dataForm = registro_buscado, urlForm = f"/update/{id}")  
+        return render_template("update.html", titulo = "Actualizar", tipoAccion = "actualizar", tipoBoton = "Editar", dataForm = registro_buscado, urlForm = f"/update/{id}")  
 
 
 
