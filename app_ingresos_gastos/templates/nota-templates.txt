@@ -1,0 +1,16 @@
+Se pueden agregar:
+
+En la linea 7 de base esta esta linea:
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
+Y antes de finalizar el body esta: 
+ <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+
+Esto sirve para activar bootstrap en nuestra pagina (que tambien utiliza javascript). Esto permite agregar configuraciones a las etiquetas, customizar la pagina, y hacerla como las paginas modernas. 
+En la documentacion de bootstrap se puede ver que hay que agregarle a las etiquetas para agregar los estilos, colores, etc.
+
+
+Nosotors agregamos:
+<link rel="stylesheet" href="static/pico.css">
+
+Esto es para utilizar los estilos de pico (en el archivo pico.css) para lograr lo mismo que bootstrap pero con otra herramienta

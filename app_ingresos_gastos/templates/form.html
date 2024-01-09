@@ -8,7 +8,8 @@
     <label>Concepto:</label><br>
     <input type="text" name="concepto" value="{{dataForm['concepto']}}"><br>
     <label>Monto:</label><br>
-    <input type="number" name="monto" step="0.01" value="{{dataForm['monto']}}"><br><br> {# el step es para que el campo acepte dos decimales#}
+    <input type="number" name="monto" id="quantity" step="0.01" value="{{dataForm['monto']}}"><br><br> {# el step es para que el campo acepte dos decimales#} 
+    {# el id tambien sirve para darle un estilo en particular a los objetos que tengan ese id. En base.html se puede ver el estilo creado para los id="quantity"#}
     
     <button type="submit">{{tipoBoton}}</button>  {# al ponerle como metodo post al form, el boton de tipo submit envia un post y no un get#}
 </form>

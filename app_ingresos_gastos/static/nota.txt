@@ -1,0 +1,2 @@
+La carpeta static se tiene que llamar asi para que html la reconozca como donde van a estar los estilos.
+Al poner los estilos en el ficher style.css se pueden dejar todos ahi y llamar desde el base.html (linea 7, <link rel="stylesheet" href="static/style.css">)
