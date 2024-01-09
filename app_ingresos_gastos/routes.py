@@ -47,11 +47,17 @@ def delete(id):
 @app.route("/update/<int:id>", methods=["GET", "POST"])
 def update(id):
     if request.method == "POST":  #Maneja que pasa con el metodo post
-        formulario = request.form
-        registros = select_all()
-        update_item(id, registros, formulario)
-        
-        return redirect("/")
+        comprobar_error = validarFormulario(request.form)
+
+        if comprobar_error:
+            return render_template("update.html", titulo = "Actualizar", tipoAccion = "actualizar", tipoBoton = "Editar", error = comprobar_error, dataForm = request.form, urlForm = f"/update/{id}")  
+
+        else:
+            formulario = request.form
+            registros = select_all()
+            update_item(id, registros, formulario)
+
+            return redirect("/")
     
     else:  #Maneja que pasa con el metodo get
         registro_buscado = select_by(id, "dic")   
